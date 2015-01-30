@@ -36,8 +36,18 @@ class Node
   end
 end
 
-def build_tree(arr, left=[], right=[])
-	return Node.new(arr[0]) if arr.length == 1
+class Tree
+
+  def initialize(values)
+  	@root = build_tree(values)
+  end
+
+  def root
+  	@root
+  end
+
+  def build_tree(arr, left=[], right=[])
+    return Node.new(arr[0]) if arr.length == 1
 	root = Node.new(arr[arr.length/2])
 	arr.delete(root.value)
 	arr.each do |val|
@@ -45,36 +55,14 @@ def build_tree(arr, left=[], right=[])
 	end
 	root.set_child_l(build_tree(left)) if left.length > 0
 	root.set_child_r(build_tree(right)) if right.length > 0
-	#left = arr[0..arr.length/2-1]
-	#right = arr[arr.length/2+1..arr.length]
-	#if left.length == 1
-	#	if left[0] < root.value
-	#		root.set_child_l(build_tree(left))
-	#		root.set_child_r(build_tree(right)) if right.length > 0
-	#	else
-	#		root.set_child_l(build_tree(right)) if right.length > 0
-	#		root.set_child_r(build_tree(left))
-	#	end
-	#else
-
-	#end
-
-
-
-	#root.set_children(build_tree(left)) if left.length > 0
-	#root.set_children(build_tree(right)) if right.length > 0
-	#root.set_children(arr[0..arr.length/2-1])
-	#root.set_children(arr[arr.length/2+1..arr.length])
 	root
+  end
+
 end
 
-p build_tree([2,1])
-p build_tree([3,2,1])
-p build_tree([5,1,2,7,3,1,6,2,4])
+t = Tree.new([5,1,2,3,7,6,4])
+p t
 
-#node1 = Node.new(5)
-#p node1.value
-#p node1.get_children
-#p node1.set_children(2)
-#p node1.get_children
-
+#p build_tree([2,1])
+#p build_tree([3,2,1])
+#p build_tree([5,1,2,7,3,1,6,2,4])
