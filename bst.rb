@@ -3,8 +3,8 @@ class Node
   def initialize(value)
   	@value = value
   	@parent = nil
-  	@child_left = nil
-  	@child_right = nil
+  	@left = nil
+  	@right = nil
   end
 
   def value
@@ -15,12 +15,12 @@ class Node
   	@parent
   end
 
-  def get_child_l
-  	@child_left
+  def left_child
+  	@left
   end
 
-  def get_child_r
-  	@child_right
+  def right_child
+  	@right
   end
 
   def set_parent(node)
@@ -28,11 +28,11 @@ class Node
   end
 
   def set_child_l(node)
-  	@child_left = node
+  	@left = node
   end
 
   def set_child_r(node)
-  	@child_right = node
+  	@right = node
   end
 end
 
@@ -63,34 +63,69 @@ class Tree
   	if @root.value == target
   		return @root
   	else
-  		while !queue.empty?
-  		  a = queue.shift
-  		  unless a.get_child_l.nil?
-  		    if a.get_child_l.value == target
-  		  	  return a.get_child_l
-  		  	else
-  		  	  queue << a.get_child_l
-  		  	end
+      while !queue.empty?
+  		a = queue.shift
+  		unless a.left_child.nil?
+  		  if a.left_child.value == target
+  		    return a.left_child
+  		  else
+  		    queue << a.left_child
   		  end
-  		  unless a.get_child_r.nil?
-  		    if a.get_child_r.value == target
-  		  	  return a.get_child_r
-  		  	else
-  		  	  queue << a.get_child_r
-  		  	end
+  		end
+  		unless a.right_child.nil?
+  		  if a.right_child.value == target
+  		  	return a.right_child
+  		  else
+  		  	queue << a.right_child
   		  end
   	    end
+  	  end
   	end
   end
 
+  def depth_first_search(target, stack=[], visited=[])
+  	stack << @root
+  	visited << @root	
+
+  	while !stack.empty?
+  	  curr_node = stack.last
+  	  return curr_node if curr_node.value == target
+
+  	  if curr_node.left_child && !visited.include?(curr_node.left_child)
+  	  	return curr_node.left_child if curr_node.left_child.value == target
+  	  	stack << curr_node.left_child
+  	  	visited << curr_node.left_child
+
+  	  elsif curr_node.right_child && !visited.include?(curr_node.right_child)
+  	  	return stack.last.right_child if stack.last.value == target
+  	  	visited << stack.last.right_child
+  	  	stack << stack.last.right_child
+
+  	  else 
+  	    stack.pop
+  	  end
+  	end  	
+  end
+
+  def dfs_rec(target, node=@root)
+  	return node if node.value == target
+  	a = dfs_rec(target, node.left_child) if node.left_child
+  	b = dfs_rec(target, node.right_child) if node.right_child
+  	a ? a : b
+  end
 
 end
 
-t = Tree.new([5,1,7,3,6,2,4])
-#p t
-
-p t.breadth_first_search(1)
-
-#p build_tree([2,1])
-#p build_tree([3,2,1])
-#p build_tree([5,1,2,7,3,1,6,2,4])
+t = Tree.new([0,1,2,3,4,5,6])
+p t
+p t.breadth_first_search(8)
+p t.breadth_first_search(2)
+p t.depth_first_search(0)
+p t.depth_first_search(4)
+p t.dfs_rec(6)
+#p t.depth_first_search(3)
+#p t.depth_first_search(4)
+#p t.depth_first_search(9)
+#p t.depth_first_search(1)
+#p t.depth_first_search(2)
+#p t.depth_first_search(7)
