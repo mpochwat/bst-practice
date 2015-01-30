@@ -2,7 +2,7 @@ class Node
   
   def initialize(value)
   	@value = value
-  	@parent = nil
+  #	@parent = nil
   	@left = nil
   	@right = nil
   end
@@ -11,9 +11,9 @@ class Node
   	@value
   end
 
-  def get_parent
-  	@parent
-  end
+  #def get_parent
+  #	@parent
+  #end
 
   def left_child
   	@left
@@ -23,15 +23,15 @@ class Node
   	@right
   end
 
-  def set_parent(node)
-  	@parent = node
-  end
+  #def set_parent(node)
+  #	@parent = node
+  #end
 
-  def set_child_l(node)
+  def set_left(node)
   	@left = node
   end
 
-  def set_child_r(node)
+  def set_right(node)
   	@right = node
   end
 end
@@ -47,14 +47,13 @@ class Tree
   end
 
   def build_tree(arr, left=[], right=[])
-    return Node.new(arr[0]) if arr.length == 1
 	root = Node.new(arr[arr.length/2])
 	arr.delete(root.value)
 	arr.each do |val|
 		val < root.value ? left << val : right << val
 	end
-	root.set_child_l(build_tree(left)) if left.length > 0
-	root.set_child_r(build_tree(right)) if right.length > 0
+	root.set_left(build_tree(left)) if left.length > 0
+	root.set_right(build_tree(right)) if right.length > 0
 	root
   end
 
@@ -117,15 +116,10 @@ class Tree
 end
 
 t = Tree.new([0,1,2,3,4,5,6])
+
 p t
 p t.breadth_first_search(8)
 p t.breadth_first_search(2)
 p t.depth_first_search(0)
 p t.depth_first_search(4)
 p t.dfs_rec(6)
-#p t.depth_first_search(3)
-#p t.depth_first_search(4)
-#p t.depth_first_search(9)
-#p t.depth_first_search(1)
-#p t.depth_first_search(2)
-#p t.depth_first_search(7)
