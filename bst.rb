@@ -58,10 +58,38 @@ class Tree
 	root
   end
 
+  def breadth_first_search(target, queue=[])
+  	queue << @root
+  	if @root.value == target
+  		return @root
+  	else
+  		while !queue.empty?
+  		  a = queue.shift
+  		  unless a.get_child_l.nil?
+  		    if a.get_child_l.value == target
+  		  	  return a.get_child_l
+  		  	else
+  		  	  queue << a.get_child_l
+  		  	end
+  		  end
+  		  unless a.get_child_r.nil?
+  		    if a.get_child_r.value == target
+  		  	  return a.get_child_r
+  		  	else
+  		  	  queue << a.get_child_r
+  		  	end
+  		  end
+  	    end
+  	end
+  end
+
+
 end
 
-t = Tree.new([5,1,2,3,7,6,4])
-p t
+t = Tree.new([5,1,7,3,6,2,4])
+#p t
+
+p t.breadth_first_search(1)
 
 #p build_tree([2,1])
 #p build_tree([3,2,1])
